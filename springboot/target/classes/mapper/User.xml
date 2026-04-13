@@ -10,7 +10,12 @@
     </insert>
 
     <update id="updateById">
-        update user set name = #{name}, age = #{age}, sex = #{sex}, phone = #{phone}, address = #{address}, updatetime = #{updatetime}, account = #{account} where id = #{id}
+        update user set name = #{name}, age = #{age}, sex = #{sex}, phone = #{phone}, address = #{address},
+                        updatetime = #{updatetime}, account = #{account}, status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateByUserNo">
+        update user set account = account + #{score} where username = #{userNo}
     </update>
 
     <delete id="deleteById">

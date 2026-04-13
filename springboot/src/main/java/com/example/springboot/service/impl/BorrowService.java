@@ -77,7 +77,7 @@ public class BorrowService implements IBorrowService {
         }
         userMapper.getByUsername(userNo);
         // 2. 校验图书的数量是否足够
-        Book book = bookMapper.getByBo(obj.getBookNo());
+        Book book = bookMapper.getByNo(obj.getBookNo());
         if(Objects.isNull(book)) {
             throw new ServiceException("所借图书不存在");
         }
@@ -109,14 +109,43 @@ public class BorrowService implements IBorrowService {
         return new PageInfo<>(borrowMapper.listRestitutionByCondition(baseRequest));
     }
 
+    // 还书逻辑
+    @Transactional
     @Override
     public void saveRestitution(Restitution obj) {
         // 改状态
         obj.setStatus("已归还");
-        borrowMapper.updateStatus("已归还", obj.getBookNo(), obj.getUserNo());
+        borrowMapper.updateStatus("已归还", obj.getId()); // obj.getId() 是前端传来的借书id
 
         // 图书数量增加
+//        obj.setId(null); // 新数据
+        obj.setRealDate(LocalDate.now());
         borrowMapper.saveRestitution(obj);
+
+        bookMapper.updateNumByNo(obj.getBookNo());
+
+        Book book = bookMapper.getByNo(obj.getBookNo());
+        if(book != null) {
+            long until = 0;
+            Integer status;
+            if(obj.getRealDate().isBefore(obj.getReturnDate())) {
+                until = obj.getRealDate().until(obj.getReturnDate(), ChronoUnit.DAYS);
+                int score = (int) until * book.getScore(); // 获取归还的积分
+            } else if(obj.getRealDate().isAfter(obj.getReturnDate())) {
+                until = -obj.getRealDate().until(obj.getReturnDate(), ChronoUnit.DAYS);
+            }
+            int score = (int) until * book.getScore(); // 获取归还的积分
+            if(score < 0) {
+                User user = userMapper.getByUsername(obj.getUserNo());
+                int account = user.getAccount() + score;
+                user.setAccount(account);
+                if(score < 0) {
+                    // 绑定账号
+                    user.setStatus(false);
+                }
+                userMapper.updateById(user);
+            }
+        }
     }
 
     @Override
@@ -139,5 +168,4 @@ public class BorrowService implements IBorrowService {
     public void deleteRestitutionById(Integer id) {
         borrowMapper.deleteRestitutionById(id);
     }
-
 }

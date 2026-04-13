@@ -54,7 +54,7 @@ public class BorrowController {
     }
 
     @PostMapping("/saveRestitution")
-    public Result save(@RequestBody Restitution obj) {
+    public Result saveRestitution(@RequestBody Restitution obj) {
         borrowService.saveRestitution(obj);
         return Result.success();
     }
@@ -67,6 +67,6 @@ public class BorrowController {
 
     @GetMapping("/pageRestitution")
     public Result pageRestitution(BorrowPageRequest pageRequest) {
-        return Result.success(borrowService.page(pageRequest));
+        return Result.success(borrowService.pageRestitution(pageRequest));
     }
 }

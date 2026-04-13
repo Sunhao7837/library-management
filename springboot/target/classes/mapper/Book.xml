@@ -28,6 +28,10 @@
         update book set name = #{name}, description = #{description}, publish_date = #{publishDate}, author = #{author}, publisher = #{publisher}, category = #{category}, book_no = #{bookNo}, cover = #{cover}, updatetime = #{updatetime}, score = #{score}, nums = #{nums} where id = #{id}
     </update>
 
+    <update id="updateNumByNo">
+        update book set nums = nums + 1 where book_no = #{bookNo}
+    </update>
+
     <delete id="deleteById">
         delete from book where id = #{id}
     </delete>
@@ -39,7 +43,7 @@
     <select id="getById" resultType="com.example.springboot.entity.Book">
         select * from book where id = #{id}
     </select>
-    <select id="getByBo" resultType="com.example.springboot.entity.Book">
+    <select id="getByNo" resultType="com.example.springboot.entity.Book">
         select * from book where book_no = #{bookNo}
     </select>
 </mapper>

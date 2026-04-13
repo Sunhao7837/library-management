@@ -4,6 +4,7 @@ import com.example.springboot.controller.request.BaseRequest;
 import com.example.springboot.entity.Borrow;
 import com.example.springboot.entity.Restitution;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,5 +28,6 @@ public interface BorrowMapper {
 
     void deleteRestitutionById(Integer id);
 
-    void updateStatus(String status, String bookNo, String userNo);
+    void updateStatus(@Param("status") String status, @Param("id") Integer id);
+
 }

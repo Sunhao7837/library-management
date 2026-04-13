@@ -15,4 +15,5 @@ public class User extends BaseEntity {
     private String address;
     private Integer account;
     private Integer score;
+    private boolean status;
 }

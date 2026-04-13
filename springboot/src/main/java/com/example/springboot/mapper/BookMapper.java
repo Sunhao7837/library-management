@@ -21,5 +21,7 @@ public interface BookMapper {
 
     void deleteById(Integer id);
 
-    Book getByBo(String bookNo);
+    Book getByNo(String bookNo);
+
+    void updateNumByNo(String bookNo);
 }

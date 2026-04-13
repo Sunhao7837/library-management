@@ -78,7 +78,7 @@ export default {
     })
 
     request.get('/user/list').then(res => {
-      this.users = res.data
+      this.users = res.data.filter(v => v.status)
     })
   },
   methods: {
