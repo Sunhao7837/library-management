@@ -15,7 +15,12 @@
     </update>
 
     <update id="updateByUserNo">
-        update user set account = account + #{score} where username = #{userNo}
+        update user set account = account + #{score}, where username = #{userNo}
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
     </update>
 
     <delete id="deleteById">

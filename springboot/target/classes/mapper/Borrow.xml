@@ -40,9 +40,9 @@
 
     <insert id="saveRestitution">
         insert into restitution(book_name, book_no, user_no, user_name, user_phone, score, days, return_date,
-                                real_date)
+                                real_date, status)
         values(#{bookName}, #{bookNo}, #{userNo}, #{userName}, #{userPhone}, #{score}, #{days},
-               #{returnDate}, #{realDate})
+               #{returnDate}, #{realDate}, #{status})
     </insert>
 
     <insert id="save">

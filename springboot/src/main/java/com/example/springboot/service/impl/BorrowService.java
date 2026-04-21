@@ -99,6 +99,7 @@ public class BorrowService implements IBorrowService {
         bookMapper.updateById(book);
 
         obj.setReturnDate(LocalDate.now().plus(obj.getDays(), ChronoUnit.DAYS)); // 当前的日期加 days 得到归还的日期
+        obj.setScore(score);
         // 7. 新增借书记录
         borrowMapper.save(obj);
     }
@@ -124,27 +125,23 @@ public class BorrowService implements IBorrowService {
 
         bookMapper.updateNumByNo(obj.getBookNo());
 
+        // 返还和扣除用户积分
         Book book = bookMapper.getByNo(obj.getBookNo());
         if(book != null) {
             long until = 0;
-            Integer status;
             if(obj.getRealDate().isBefore(obj.getReturnDate())) {
                 until = obj.getRealDate().until(obj.getReturnDate(), ChronoUnit.DAYS);
-                int score = (int) until * book.getScore(); // 获取归还的积分
             } else if(obj.getRealDate().isAfter(obj.getReturnDate())) {
-                until = -obj.getRealDate().until(obj.getReturnDate(), ChronoUnit.DAYS);
+                until = -obj.getReturnDate().until(obj.getRealDate(), ChronoUnit.DAYS);
             }
             int score = (int) until * book.getScore(); // 获取归还的积分
-            if(score < 0) {
-                User user = userMapper.getByUsername(obj.getUserNo());
-                int account = user.getAccount() + score;
-                user.setAccount(account);
-                if(score < 0) {
-                    // 绑定账号
-                    user.setStatus(false);
-                }
-                userMapper.updateById(user);
+            User user = userMapper.getByUsername(obj.getUserNo());
+            int account = user.getAccount() + score;
+            user.setAccount(account);
+            if(account < 0) {
+                user.setStatus(false);
             }
+            userMapper.updateById(user);
         }
     }
 

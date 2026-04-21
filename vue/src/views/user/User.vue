@@ -14,7 +14,7 @@
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="age" label="年龄"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="phone" label="联系方式"></el-table-column>
+      <el-table-column prop="phone" label="联系方式" width="100"></el-table-column>
       <el-table-column prop="sex" label="性别"></el-table-column>
       <el-table-column prop="account" label="账户积分"></el-table-column>
       <el-table-column label="状态" width="230">
