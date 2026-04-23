@@ -24,4 +24,6 @@ public interface IBorrowService {
     void deleteById(Integer id);
 
     void deleteRestitutionById(Integer id);
+
+    Object getCountByTimeRange(String timeRange);
 }

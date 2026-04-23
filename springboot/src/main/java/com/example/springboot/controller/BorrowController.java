@@ -69,4 +69,10 @@ public class BorrowController {
     public Result pageRestitution(BorrowPageRequest pageRequest) {
         return Result.success(borrowService.pageRestitution(pageRequest));
     }
+
+    // timeRange: week month month2 month3
+    @GetMapping("/lineCharts/{timeRange}")
+    public Result lineCharts(@PathVariable String timeRange) {
+        return Result.success(borrowService.getCountByTimeRange(timeRange));
+    }
 }

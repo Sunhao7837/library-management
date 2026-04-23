@@ -3,6 +3,7 @@ package com.example.springboot.mapper;
 import com.example.springboot.controller.request.BaseRequest;
 import com.example.springboot.entity.Borrow;
 import com.example.springboot.entity.Restitution;
+import com.example.springboot.mapper.po.BorrowRestitutionCountPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,5 @@ public interface BorrowMapper {
 
     void updateStatus(@Param("status") String status, @Param("id") Integer id);
 
+    List<BorrowRestitutionCountPO> getCountByTimeRange(@Param("timeRange") String timeRange, @Param("type") int type);  // 1 borrow  2 return
 }
