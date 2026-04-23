@@ -36,8 +36,18 @@
       <el-form-item label="借书积分" prop="cover">
         <el-input-number v-model="form.score" :min="10" :max="30" label="所需积分"></el-input-number>
       </el-form-item>
+      <br>
       <el-form-item label="封面" prop="cover">
         <el-input v-model="form.cover" placeholder="请输入封面"></el-input>
+        <el-upload
+            class="avatar-uploader"
+            :action="'http://localhost:9090/api/book/file/upload?token=' + this.admin.token"
+            :show-file-list="false"
+            :on-success="handleCoverSuccess"
+        >
+          <img v-if="form.cover" :src="form.cover" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
     </el-form>
 
@@ -49,10 +59,12 @@
 
 <script>
 import request from "@/utils/request";
+import Cookies from "js-cookie";
 export default {
   name: 'EditBook',
   data() {
     return {
+      admin: Cookies.get('admin') ? JSON.parse(Cookies.get('admin')) : {},
       form: {},
       categories: [],
       rules: {
@@ -82,6 +94,13 @@ export default {
     })
   },
   methods: {
+    handleCoverSuccess(res) {
+      if(res.code === '200') {
+        console.log(res.data)
+        // this.$set(this.form, 'cover', res.data)
+        this.form.cover = res.data
+      }
+    },
     save() {
       request.put('/book/update', this.form).then(res => {
         if(res.code === '200') {
@@ -96,3 +115,29 @@ export default {
 }
 
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

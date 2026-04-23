@@ -66,7 +66,7 @@ export default {
   name: 'BookList',
   data() {
     return {
-      admin: Cookies.get('book') ? JSON.parse(Cookies.get('admin')) : {},
+      admin: Cookies.get('admin') ? JSON.parse(Cookies.get('admin')) : {},
       tableData: [],
       total: 0,
       params: {
